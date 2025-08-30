@@ -50,17 +50,3 @@ The project follows a strict **Onion Architecture** to ensure a clean separation
 * **Presentation (Web)**: The user-facing layer, including the MVC Web App and the RESTful API endpoints.
 
 ---
-
-## Getting Started
-
-### Prerequisites
-Make sure you have the following installed:
-* .NET SDK (version 8.0 or later)
-* SQL Server
-* Visual Studio or Visual Studio Code
-
-### Local Setup
-1. **Clone the repository:**
-   ```bash
-   git clone [your-repository-url]
-   cd PropertyNow
