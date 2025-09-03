@@ -1,34 +1,71 @@
+using System.Text.Json.Serialization;
+using InvestmentApi.Handlers;
+using Microsoft.AspNetCore.Mvc;
+using RealEstateAPI.Extensions;
+using RealEstateAPI.Handlers;
+using PropertyNow.Core.Application;
+using PropertyNow.Infrastructure.Identity;
+using PropertyNow.Infrastructure.Persistence;
+using PropertyNow.Infrastructure.Shared;
 
-namespace PropertyNowAPI
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+
+builder.Services.AddControllers(opt =>
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+    opt.Filters.Add(new ProducesAttribute("application/json"));
+}).ConfigureApiBehaviorOptions(opt =>
+{
+    opt.SuppressInferBindingSourcesForParameters = true;
+    opt.SuppressMapClientErrors = true;
+}).AddJsonOptions(opt =>
+{
+    opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
-            // Add services to the container.
+// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 
-            builder.Services.AddControllers();
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
+//
+// LAYERS
+//
 
-            var app = builder.Build();
+builder.Services.AddPersistenceLayerIoc(builder.Configuration);
+builder.Services.AddApplicationLayerIoc();
+builder.Services.AddSharedLayerIoc(builder.Configuration);
+builder.Services.AddIdentityLayerIocForWebApi(builder.Configuration);
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.MapOpenApi();
-            }
+//
+// CONFIGURATIONS
+//
 
-            app.UseHttpsRedirection();
+builder.Services.AddOpenApi();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddHealthChecks();
+builder.Services.AddAppiVersioningExtension();
+builder.Services.AddSwaggerExtension();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
-            app.UseAuthorization();
+var app = builder.Build();
+await app.Services.RunIdentitySeedAsync();
 
-
-            app.MapControllers();
-
-            app.Run();
-        }
-    }
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwaggerExtension(app);
+    app.MapOpenApi();
 }
+
+app.UseHttpsRedirection();
+app.UseExceptionHandler();
+
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseHealthChecks("/health");
+
+app.MapControllers();
+
+await app.RunAsync();
