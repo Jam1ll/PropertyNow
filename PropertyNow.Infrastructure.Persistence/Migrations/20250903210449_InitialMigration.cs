@@ -110,13 +110,13 @@ namespace PropertyNow.Infrastructure.Persistence.Migrations
                         column: x => x.PropertyTypeId,
                         principalTable: "PropertyTypes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Properties_SalesTypes_SalesTypeId",
                         column: x => x.SalesTypeId,
                         principalTable: "SalesTypes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

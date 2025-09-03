@@ -12,7 +12,7 @@ using PropertyNow.Infrastructure.Persistence.Contexts;
 namespace PropertyNow.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(PropertyNowContext))]
-    [Migration("20250816051616_Initial-Migration")]
+    [Migration("20250903210449_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -417,13 +417,13 @@ namespace PropertyNow.Infrastructure.Persistence.Migrations
                     b.HasOne("PropertyNow.Core.Domain.Entities.PropertyType", "PropertyType")
                         .WithMany("Properties")
                         .HasForeignKey("PropertyTypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("PropertyNow.Core.Domain.Entities.SalesType", "SalesType")
                         .WithMany("Properties")
                         .HasForeignKey("SalesTypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("PropertyType");

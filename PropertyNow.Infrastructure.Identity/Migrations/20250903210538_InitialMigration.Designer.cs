@@ -12,7 +12,7 @@ using PropertyNow.Infrastructure.Identity.Contexts;
 namespace PropertyNow.Infrastructure.Identity.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20250816051708_InitialMigration")]
+    [Migration("20250903210538_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />

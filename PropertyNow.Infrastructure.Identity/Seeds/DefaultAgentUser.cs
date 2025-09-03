@@ -8,7 +8,6 @@ namespace PropertyNow.Infrastructure.Identity.Seeds
     {
         public static async Task SeedAsync(UserManager<AppUser> userManager)
         {
-            /*
             var email = "agent@mail.com";
             var user = await userManager.FindByEmailAsync(email);
 
@@ -29,7 +28,6 @@ namespace PropertyNow.Infrastructure.Identity.Seeds
                 await userManager.CreateAsync(admin, "123Pa$$word!");
                 await userManager.AddToRoleAsync(admin, Roles.Agent.ToString());
             }
-            */
         }
     }
 }
