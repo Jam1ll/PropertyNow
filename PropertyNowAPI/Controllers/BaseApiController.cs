@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace RealEstateAPI.Controllers
+namespace PropertyNowAPI.Controllers
 {
     /// <summary>
     /// Base controller that provides access to MediatR for all derived API controllers.

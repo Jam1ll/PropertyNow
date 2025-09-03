@@ -6,7 +6,7 @@ using PropertyNow.Core.Application.Interfaces;
 using PropertyNow.Core.Domain.Common.Enums;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace RealEstateAPI.Controllers.v1
+namespace PropertyNowAPI.Controllers.v1
 {
     [ApiVersion("1.0")]
     [SwaggerTag("Endpoints for user authentication and user registration (Admin and Developer)")]

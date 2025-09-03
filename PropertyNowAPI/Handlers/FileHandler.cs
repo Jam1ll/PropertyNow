@@ -1,4 +1,4 @@
-﻿namespace RealEstateAPI.Handlers
+﻿namespace PropertyNowAPI.Handlers
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S125:Sections of code should not be commented out", Justification = "<Pending>")]
     public static class FileHandler

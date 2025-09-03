@@ -1,8 +1,7 @@
 using System.Text.Json.Serialization;
 using InvestmentApi.Handlers;
 using Microsoft.AspNetCore.Mvc;
-using RealEstateAPI.Extensions;
-using RealEstateAPI.Handlers;
+using PropertyNowAPI.Extensions;
 using PropertyNow.Core.Application;
 using PropertyNow.Infrastructure.Identity;
 using PropertyNow.Infrastructure.Persistence;

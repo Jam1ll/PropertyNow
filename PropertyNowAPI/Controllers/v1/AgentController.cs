@@ -10,7 +10,7 @@ using PropertyNow.Core.Application.Features.Agents.Queries.GetById;
 using PropertyNow.Core.Application.Features.Agents.Queries.List;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace RealEstateAPI.Controllers.v1
+namespace PropertyNowAPI.Controllers.v1
 {
     [ApiVersion("1.0")]
     [Authorize(Roles = "Admin, Developer")]

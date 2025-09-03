@@ -1,7 +1,7 @@
 ﻿using Asp.Versioning;
 using Microsoft.OpenApi.Models;
 
-namespace RealEstateAPI.Extensions
+namespace PropertyNowAPI.Extensions
 {
     public static class ServiceExtension
     {

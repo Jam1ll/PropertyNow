@@ -1,4 +1,4 @@
-﻿namespace RealEstateAPI.Extensions
+﻿namespace PropertyNowAPI.Extensions
 {
     public static class AppExtension
     {
