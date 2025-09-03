@@ -7,9 +7,9 @@ namespace PropertyNow.Infrastructure.Persistence.Repositories
 {
     public class MessageRepository : GenericRepository<Message>, IMessageRepository
     {
-        private readonly RealEstateContext _context;
+        private readonly PropertyNowContext _context;
 
-        public MessageRepository(RealEstateContext context) : base(context)
+        public MessageRepository(PropertyNowContext context) : base(context)
         {
             _context = context;
         }

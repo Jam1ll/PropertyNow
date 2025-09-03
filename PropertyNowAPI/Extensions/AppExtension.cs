@@ -11,7 +11,7 @@
                 if (versionDescriptions != null && versionDescriptions.Any()) {
                     foreach (var apiVersion in versionDescriptions) {
                         var url = $"/swagger/{apiVersion.GroupName}/swagger.json";
-                        var name = $"Real Estate API - {apiVersion.GroupName.ToUpperInvariant()}";
+                        var name = $"Property Now API - {apiVersion.GroupName.ToUpperInvariant()}";
                         opt.SwaggerEndpoint(url,name);
                     }                
                 }

@@ -7,9 +7,9 @@ namespace PropertyNow.Infrastructure.Persistence.Repositories
 {
     public class FeatureRepository : GenericRepository<Feature>, IFeatureRepository
     {
-        private readonly RealEstateContext _dbContext;
+        private readonly PropertyNowContext _dbContext;
 
-        public FeatureRepository(RealEstateContext dbContext) : base(dbContext)
+        public FeatureRepository(PropertyNowContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
         }

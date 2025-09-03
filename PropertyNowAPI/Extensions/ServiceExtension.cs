@@ -16,7 +16,7 @@ namespace PropertyNowAPI.Extensions
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1.0",
-                    Title = "Real Estate API",
+                    Title = "Property Now API",
                     Description = "This Api will be responsible for overall data distribution",
                     Contact = new OpenApiContact
                     {

@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 public class FavoritePropertyRepository : GenericRepository<FavoriteProperty>, IFavoritePropertyRepository
 {
-    private readonly RealEstateContext _context;
+    private readonly PropertyNowContext _context;
 
-    public FavoritePropertyRepository(RealEstateContext context) : base(context)
+    public FavoritePropertyRepository(PropertyNowContext context) : base(context)
     {
         _context = context;
     }

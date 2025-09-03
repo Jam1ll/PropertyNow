@@ -1,0 +1,36 @@
+﻿@model UserViewModel
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Eliminar Agente";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow border-danger border-2">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="bi bi-exclamation-octagon me-2"></i> Confirmar Eliminación
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p class="mb-3">¿Está seguro que desea eliminar al agente **@Model.UserName**?</p>
+                    <div class="alert alert-warning" role="alert">
+                        <i class="bi bi-info-circle-fill me-2"></i> Esta acción es irreversible y eliminará todas sus propiedades.
+                    </div>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary d-flex align-items-center">
+                        <i class="bi bi-x-circle me-2"></i> Cancelar
+                    </a>
+                    <form asp-action="DeleteConfirmed" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        <button type="submit" class="btn btn-danger d-flex align-items-center">
+                            <i class="bi bi-trash-fill me-2"></i> Aceptar
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

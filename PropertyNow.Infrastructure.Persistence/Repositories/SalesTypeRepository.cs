@@ -6,7 +6,7 @@ namespace PropertyNow.Infrastructure.Persistence.Repositories
 {
     public class SalesTypeRepository : GenericRepository<SalesType>, ISalesTypeRepository
     {
-        public SalesTypeRepository(RealEstateContext context) : base(context)
+        public SalesTypeRepository(PropertyNowContext context) : base(context)
         {
         }
     }

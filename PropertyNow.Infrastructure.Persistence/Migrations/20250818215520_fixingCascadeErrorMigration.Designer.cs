@@ -11,7 +11,7 @@ using PropertyNow.Infrastructure.Persistence.Contexts;
 
 namespace PropertyNow.Infrastructure.Persistence.Migrations
 {
-    [DbContext(typeof(RealEstateContext))]
+    [DbContext(typeof(PropertyNowContext))]
     [Migration("20250818215520_fixingCascadeErrorMigration")]
     partial class fixingCascadeErrorMigration
     {

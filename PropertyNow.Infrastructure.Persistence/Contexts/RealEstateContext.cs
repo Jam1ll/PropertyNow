@@ -5,9 +5,9 @@ using System.Reflection;
 
 namespace PropertyNow.Infrastructure.Persistence.Contexts
 {
-    public class RealEstateContext : DbContext
+    public class PropertyNowContext : DbContext
     {
-        public RealEstateContext(DbContextOptions<RealEstateContext> options) : base(options) { }
+        public PropertyNowContext(DbContextOptions<PropertyNowContext> options) : base(options) { }
 
         //
         // DB SETS

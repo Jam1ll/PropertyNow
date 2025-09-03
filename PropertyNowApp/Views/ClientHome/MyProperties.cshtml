@@ -1,0 +1,165 @@
+﻿@using System.Security.Claims
+@model List<PropertyNow.Core.Application.ViewModels.Property.PropertyViewModel>
+
+@{
+    ViewData["Title"] = "Mis Propiedades";
+    Layout = "_LayoutClient";
+
+    var userId = User.FindFirstValue(System.Security.Claims.ClaimTypes.NameIdentifier);
+
+    var propertyTypes = Model.Select(p => p.PropertyType).DistinctBy(t => t.Id).ToList();
+    var salesTypes = Model.Select(p => p.SalesType).DistinctBy(st => st.Id).ToList();
+    var uniqueRooms = Model.Select(p => p.NumberOfRooms).Distinct().OrderBy(r => r).ToList();
+    var uniqueBathrooms = Model.Select(p => p.NumberOfBathrooms).Distinct().OrderBy(b => b).ToList();
+}
+
+<header class="bg-primary text-white py-4 mb-4 shadow-sm">
+    <div class="container text-center">
+        <h1 class="h3 fw-bold mb-0">Mis Propiedades Favoritas</h1>
+        <p class="text-white-50 mb-0">Consulta y administra tus favoritos</p>
+    </div>
+</header>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-info">
+        No tienes propiedades marcadas como favoritas.
+    </div>
+}
+else
+{
+    <div class="row mb-4 g-3">
+        <div class="col-md-3">
+            <div class="form-floating">
+                <input type="text" id="filterCodigo" class="form-control" placeholder="Ej: P-123">
+                <label for="filterCodigo">Código</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating">
+                <select id="filterPropertyType" class="form-select">
+                    <option value="">Todos</option>
+                    @foreach (var type in propertyTypes)
+                    {
+                        <option value="@type.Name">@type.Name</option>
+                    }
+                </select>
+                <label for="filterPropertyType">Tipo de Propiedad</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating">
+                <select id="filterSalesType" class="form-select">
+                    <option value="">Todos</option>
+                    @foreach (var salesType in salesTypes)
+                    {
+                        <option value="@salesType.Name">@salesType.Name</option>
+                    }
+                </select>
+                <label for="filterSalesType">Tipo de Venta</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating">
+                <select id="filterRooms" class="form-select">
+                    <option value="">Todos</option>
+                    @foreach (var rooms in uniqueRooms)
+                    {
+                        <option value="@rooms">@rooms</option>
+                    }
+                </select>
+                <label for="filterRooms">Habitaciones</label>
+            </div>
+        </div>
+    </div>
+
+    <div id="property-list" class="row">
+        @foreach (var p in Model)
+        {
+            <div class="col-md-4 mb-4 property-card"
+                 data-code="@p.Code"
+                 data-property-type="@p.PropertyType?.Name"
+                 data-sales-type="@p.SalesType?.Name"
+                 data-rooms="@p.NumberOfRooms"
+                 data-bathrooms="@p.NumberOfBathrooms"
+                 data-state="@(p.State == PropertyNow.Core.Domain.Common.Enums.PropertyState.Vendida ? "Vendida" : "Disponible")">
+                <div class="card h-100 shadow-sm border-0">
+                    <img src="@Url.Content(
+                                                         p.Images != null && p.Images.Any()
+                                                             ? (p.Images.First().StartsWith("~") ? p.Images.First() : "~/" + p.Images.First())
+                                                             : "~/Images/no-image.png"
+                                                         )"
+                 class="card-img-top object-fit-cover"
+                 style="height: 220px;"
+                 alt="Imagen propiedad" />
+
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">
+                            @p.PropertyType?.Name - @p.SalesType?.Name
+                        </h5>
+                        <p class="card-text">
+                            <strong>Código:</strong> @p.Code <br />
+                            <strong>Precio:</strong> @p.Price.ToString("C") <br />
+                            <strong>Habitaciones:</strong> @p.NumberOfRooms <br />
+                            <strong>Baños:</strong> @p.NumberOfBathrooms <br />
+                            <strong>Tamaño:</strong> @p.SizeInMeters m²
+                        </p>
+
+                        <form asp-action="ToggleFavorite" asp-controller="ClientHome" method="post" class="mb-2">
+                            <input type="hidden" name="propertyId" value="@p.Id" />
+                            <button type="submit" class="btn btn-danger btn-sm w-100">
+                                <i class="bi bi-heart-fill"></i> Quitar de favoritos
+                            </button>
+                        </form>
+
+                        <a asp-action="Details" asp-controller="ClientHome" asp-route-id="@p.Id" class="btn btn-outline-info btn-sm w-100">
+                            <i class="bi bi-info-circle"></i> Ver detalles
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const filterCodigo = document.getElementById('filterCodigo');
+            const filterPropertyType = document.getElementById('filterPropertyType');
+            const filterSalesType = document.getElementById('filterSalesType');
+            const filterRooms = document.getElementById('filterRooms');
+            const propertyCards = document.querySelectorAll('.property-card');
+
+            function applyFilters() {
+                const codigoValue = filterCodigo.value.toLowerCase().trim();
+                const propertyTypeValue = filterPropertyType.value.trim();
+                const salesTypeValue = filterSalesType.value.trim();
+                const roomsValue = filterRooms.value.trim();
+
+                propertyCards.forEach(card => {
+                    const cardCodigo = card.dataset.code.toLowerCase();
+                    const cardPropertyType = card.dataset.propertyType;
+                    const cardSalesType = card.dataset.salesType;
+                    const cardRooms = card.dataset.rooms;
+
+                    const matchCodigo = cardCodigo.includes(codigoValue);
+                    const matchPropertyType = propertyTypeValue === '' || cardPropertyType === propertyTypeValue;
+                    const matchSalesType = salesTypeValue === '' || cardSalesType === salesTypeValue;
+                    const matchRooms = roomsValue === '' || cardRooms === roomsValue;
+
+                    if (matchCodigo && matchPropertyType && matchSalesType && matchRooms) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            }
+
+            filterCodigo.addEventListener('input', applyFilters);
+            filterPropertyType.addEventListener('change', applyFilters);
+            filterSalesType.addEventListener('change', applyFilters);
+            filterRooms.addEventListener('change', applyFilters);
+        });
+    </script>
+}

@@ -7,9 +7,9 @@ namespace PropertyNow.Infrastructure.Persistence.Repositories
 {
     public class GenericRepository<Entity> : IGenericRepository<Entity> where Entity : class
     {
-        protected readonly RealEstateContext _context;
+        protected readonly PropertyNowContext _context;
 
-        public GenericRepository(RealEstateContext context)
+        public GenericRepository(PropertyNowContext context)
         {
             _context = context;
         }

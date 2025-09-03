@@ -7,9 +7,9 @@ namespace PropertyNow.Infrastructure.Persistence.Repositories
 {
     public class OfferRepository : GenericRepository<Offer>, IOfferRepository
     {
-        private readonly RealEstateContext _context;
+        private readonly PropertyNowContext _context;
 
-        public OfferRepository(RealEstateContext context) : base(context)
+        public OfferRepository(PropertyNowContext context) : base(context)
         {
             _context = context;
         }

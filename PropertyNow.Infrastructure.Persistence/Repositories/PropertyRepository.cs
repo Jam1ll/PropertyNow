@@ -8,9 +8,9 @@ using System.Linq.Expressions;
 
 public class PropertyRepository : GenericRepository<Property>, IPropertyRepository
 {
-    private readonly RealEstateContext _context;
+    private readonly PropertyNowContext _context;
 
-    public PropertyRepository(RealEstateContext context) : base(context)
+    public PropertyRepository(PropertyNowContext context) : base(context)
     {
         _context = context;
 

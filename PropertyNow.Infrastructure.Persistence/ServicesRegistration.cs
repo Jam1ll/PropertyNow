@@ -17,18 +17,18 @@ namespace PropertyNow.Infrastructure.Persistence
             #region contexts
             if (config.GetValue<bool>("UseInMemoryDatabase"))
             {
-                services.AddDbContext<RealEstateContext>(opt =>
+                services.AddDbContext<PropertyNowContext>(opt =>
                                               opt.UseInMemoryDatabase("AppDb"));
             }
             else
             {
                 var connectionString = config.GetConnectionString("DefaultConnection");
-                services.AddDbContext<RealEstateContext>(
+                services.AddDbContext<PropertyNowContext>(
                     (serviceProvider, opt) =>
                     {
                         opt.EnableSensitiveDataLogging();
                         opt.UseSqlServer(connectionString,
-                        m => m.MigrationsAssembly(typeof(RealEstateContext).Assembly.FullName));
+                        m => m.MigrationsAssembly(typeof(PropertyNowContext).Assembly.FullName));
                     },
                     contextLifetime: ServiceLifetime.Scoped,
                     optionsLifetime: ServiceLifetime.Scoped

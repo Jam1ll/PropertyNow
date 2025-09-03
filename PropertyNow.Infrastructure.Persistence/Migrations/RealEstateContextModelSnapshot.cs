@@ -10,8 +10,8 @@ using PropertyNow.Infrastructure.Persistence.Contexts;
 
 namespace PropertyNow.Infrastructure.Persistence.Migrations
 {
-    [DbContext(typeof(RealEstateContext))]
-    partial class RealEstateContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(PropertyNowContext))]
+    partial class PropertyNowContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

@@ -1,0 +1,168 @@
+﻿@model List<PropertyNow.Core.Application.ViewModels.Property.PropertyViewModel>
+
+@{
+    ViewData["Title"] = "Propiedades Disponibles";
+    Layout = "_LayoutAnonymous";
+
+    // Obtener listas únicas para los selects
+    var propertyTypes = Model.Select(p => p.PropertyType).DistinctBy(t => t.Id).ToList();
+    var uniqueRooms = Model.Select(p => p.NumberOfRooms).Distinct().OrderBy(r => r).ToList();
+    var uniqueBathrooms = Model.Select(p => p.NumberOfBathrooms).Distinct().OrderBy(b => b).ToList();
+}
+
+<header class="bg-primary text-white py-4 mb-4 shadow-sm">
+    <div class="container text-center">
+        <h1 class="h3 fw-bold mb-0">Propiedades Disponibles</h1>
+        <p class="text-white-50 mb-0">Explora nuestras propiedades en venta y alquiler</p>
+    </div>
+</header>
+
+<div class="container mb-4">
+    <div class="row g-3">
+        <div class="col-md-3">
+            <div class="form-floating">
+                <input type="text" id="filterCodigo" class="form-control" placeholder="Ej: P-123">
+                <label for="filterCodigo">Filtrar por Código</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating">
+                <select id="filterPropertyType" class="form-select">
+                    <option value="">Todos</option>
+                    @foreach (var type in propertyTypes)
+                    {
+                        <option value="@type.Name">@type.Name</option>
+                    }
+                </select>
+                <label for="filterPropertyType">Tipo de Propiedad</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating">
+                <input type="number" id="filterMinPrice" class="form-control" placeholder="Mínimo" />
+                <label for="filterMinPrice">Precio Mín.</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating">
+                <input type="number" id="filterMaxPrice" class="form-control" placeholder="Máximo" />
+                <label for="filterMaxPrice">Precio Máx.</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating">
+                <select id="filterRooms" class="form-select">
+                    <option value="">Todos</option>
+                    @foreach (var rooms in uniqueRooms)
+                    {
+                        <option value="@rooms">@rooms</option>
+                    }
+                </select>
+                <label for="filterRooms">Habitaciones</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating">
+                <select id="filterBathrooms" class="form-select">
+                    <option value="">Todos</option>
+                    @foreach (var bathrooms in uniqueBathrooms)
+                    {
+                        <option value="@bathrooms">@bathrooms</option>
+                    }
+                </select>
+                <label for="filterBathrooms">Baños</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div id="property-list" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+        @foreach (var p in Model)
+        {
+            <div class="col property-card"
+                 data-code="@p.Code"
+                 data-property-type="@p.PropertyType?.Name"
+                 data-price="@p.Price"
+                 data-rooms="@p.NumberOfRooms"
+                 data-bathrooms="@p.NumberOfBathrooms">
+                <div class="card h-100 shadow-sm border-0">
+                    @if (p.Images != null && p.Images.Any())
+                    {
+                        <img src="@Url.Content(p.Images.First().StartsWith("~") ? p.Images.First() : "~/" + p.Images.First())" class="card-img-top object-fit-cover" style="height: 250px;" alt="Imagen de la propiedad">
+                    }
+                    else
+                    {
+                        <img src="https://via.placeholder.com/600x400?text=Sin+imagen" class="card-img-top object-fit-cover" style="height: 250px;" alt="Sin imagen disponible">
+                    }
+                    <div class="card-body d-flex flex-column pb-0">
+                        <h5 class="card-title text-truncate fw-bold mb-1">Código: @p.Code</h5>
+                        <p class="card-text text-success fs-4 fw-bold mb-2">@p.Price.ToString("C0")</p>
+                        <div class="d-flex justify-content-between text-muted mb-3">
+                            <small><i class="bi bi-house-fill me-1"></i> @p.PropertyType?.Name</small>
+                        </div>
+                        <ul class="list-unstyled d-flex justify-content-around text-center mb-3">
+                            <li>
+                                <i class="bi bi-door-open-fill me-1 text-primary"></i> <span class="fw-bold">@p.NumberOfRooms</span><br /><small>Hab.</small>
+                            </li>
+                            <li>
+                                <i class="bi bi-rulers me-1 text-primary"></i> <span class="fw-bold">@p.SizeInMeters</span><br /><small>m²</small>
+                            </li>
+                            <li>
+                                <i class="bi bi-droplet-half me-1 text-primary"></i> <span class="fw-bold">@p.NumberOfBathrooms</span><br /><small>Baños</small>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card-footer d-flex justify-content-between bg-white border-top-0 pt-0 pb-3">
+                        <a asp-action="Details" asp-route-id="@p.Id" class="btn btn-outline-info btn-sm">
+                            <i class="bi bi-eye-fill"></i> Ver detalles
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const filterCodigo = document.getElementById('filterCodigo');
+            const filterPropertyType = document.getElementById('filterPropertyType');
+            const filterMinPrice = document.getElementById('filterMinPrice');
+            const filterMaxPrice = document.getElementById('filterMaxPrice');
+            const filterRooms = document.getElementById('filterRooms');
+            const filterBathrooms = document.getElementById('filterBathrooms');
+            const propertyCards = document.querySelectorAll('.property-card');
+
+            function applyFilters() {
+                const codigoValue = filterCodigo.value.toLowerCase().trim();
+                const propertyTypeValue = filterPropertyType.value.trim();
+                const minPriceValue = parseFloat(filterMinPrice.value) || 0;
+                const maxPriceValue = parseFloat(filterMaxPrice.value) || Infinity;
+                const roomsValue = filterRooms.value.trim();
+                const bathroomsValue = filterBathrooms.value.trim();
+
+                propertyCards.forEach(card => {
+                    const cardCodigo = card.dataset.code.toLowerCase();
+                    const cardPropertyType = card.dataset.propertyType;
+                    const cardPrice = parseFloat(card.dataset.price);
+                    const cardRooms = card.dataset.rooms;
+                    const cardBathrooms = card.dataset.bathrooms;
+
+                    const matchCodigo = cardCodigo.includes(codigoValue);
+                    const matchPropertyType = propertyTypeValue === '' || cardPropertyType === propertyTypeValue;
+                    const matchPrice = cardPrice >= minPriceValue && cardPrice <= maxPriceValue;
+                    const matchRooms = roomsValue === '' || cardRooms === roomsValue;
+                    const matchBathrooms = bathroomsValue === '' || cardBathrooms === bathroomsValue;
+
+                    card.style.display = (matchCodigo && matchPropertyType && matchPrice && matchRooms && matchBathrooms) ? '' : 'none';
+                });
+            }
+
+            [filterCodigo, filterPropertyType, filterMinPrice, filterMaxPrice, filterRooms, filterBathrooms]
+                .forEach(el => el.addEventListener('input', applyFilters));
+        });
+    </script>
+}
