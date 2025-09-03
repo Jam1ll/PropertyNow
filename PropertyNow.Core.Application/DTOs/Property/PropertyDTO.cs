@@ -1,0 +1,37 @@
+﻿using PropertyNow.Core.Application.DTOs.Client;
+using PropertyNow.Core.Application.DTOs.Feature;
+using PropertyNow.Core.Application.DTOs.Message;
+using PropertyNow.Core.Application.DTOs.Offer;
+using PropertyNow.Core.Application.DTOs.PropertyType;
+using PropertyNow.Core.Application.DTOs.SalesType;
+using PropertyNow.Core.Domain.Common.Enums;
+
+namespace PropertyNow.Core.Application.DTOs.Property
+{
+    public class PropertyDTO
+    {
+        public required int Id { get; set; }
+        public required PropertyTypeDTO PropertyType { get; set; }
+        public required SalesTypeDTO SalesType { get; set; }
+        public required decimal Price { get; set; }
+        public required string Description { get; set; }
+        public required decimal SizeInMeters { get; set; }
+        public required int NumberOfRooms { get; set; }
+        public required int NumberOfBathrooms { get; set; }
+        public required List<FeatureDTO> Features { get; set; }
+        public List<PropertyImageDTO> Images { get; set; } = new List<PropertyImageDTO>();
+
+        public required string AgentId { get; set; }
+        public required string AgentName { get; set; }
+        public string? BuyerClientId { get; set; }
+
+        public required string Code { get; set; }
+        public bool IsFavorite { get; set; }
+        public PropertyState State { get; set; }
+        public bool IsSold { get; set; }
+        public List<MessageDTO> Messages { get; set; } = new List<MessageDTO>();
+        public List<OfferDTO> Offers { get; set; } = new List<OfferDTO>();
+        public List<ClientDTO> ClientsWithOffers { get; set; } = new List<ClientDTO>();
+
+    }
+}

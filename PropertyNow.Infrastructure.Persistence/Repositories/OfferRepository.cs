@@ -1,0 +1,51 @@
+﻿using Microsoft.EntityFrameworkCore;
+using PropertyNow.Core.Domain.Entities;
+using PropertyNow.Core.Domain.Interfaces;
+using PropertyNow.Infrastructure.Persistence.Contexts;
+
+namespace PropertyNow.Infrastructure.Persistence.Repositories
+{
+    public class OfferRepository : GenericRepository<Offer>, IOfferRepository
+    {
+        private readonly RealEstateContext _context;
+
+        public OfferRepository(RealEstateContext context) : base(context)
+        {
+            _context = context;
+        }
+
+        public async Task<List<Offer>> GetAllAsync()
+        {
+            return await _context.Offers.ToListAsync();
+        }
+
+        public async Task<Offer?> GetByIdAsync(int id)
+        {
+            return await _context.Offers.FindAsync(id);
+        }
+
+
+        public async Task<List<Offer>> GetByPropertyAndClientAsync(int propertyId, string clientId)
+        {
+            return await _context.Offers
+                .Where(o => o.PropertyId == propertyId && o.ClientId == clientId)
+                .OrderByDescending(o => o.Date)
+                .ToListAsync();
+        }
+
+        public async Task<List<Offer>> GetAllPendingByPropertyAsync(int propertyId, int excludeOfferId = 0)
+        {
+            return await _context.Offers
+                .Where(o => o.PropertyId == propertyId && o.Status == Core.Domain.Common.Enums.OfferStatus.Pendiente && o.Id != excludeOfferId)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Offer>> GetOffersByPropertyAsync(int propertyId)
+        {
+            return await _context.Offers
+                .Where(o => o.PropertyId == propertyId)
+                .OrderByDescending(o => o.Date)
+                .ToListAsync();
+        }
+    }
+}
